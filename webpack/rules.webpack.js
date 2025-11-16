@@ -21,6 +21,14 @@ module.exports = [
     }
   },
   {
+    test: /\.(le|c)ss$/,
+    use: [
+      'style-loader',
+      'css-loader',
+      'postcss-loader' // 处理 Tailwind
+    ],
+  },
+  {
     test: /\.(png|jpe?g|gif)$/i,
     loader: 'file-loader',
     options: {
