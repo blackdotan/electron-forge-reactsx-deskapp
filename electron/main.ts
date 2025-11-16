@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, session } from 'electron'
 
 let mainWindow: BrowserWindow | null
 
@@ -10,7 +10,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 //     ? process.resourcesPath
 //     : app.getAppPath()
 
-function createWindow () {
+function createWindow() {
   mainWindow = new BrowserWindow({
     // icon: path.join(assetsPath, 'assets', 'icon.png'),
     width: 1100,
@@ -30,7 +30,27 @@ function createWindow () {
   })
 }
 
-async function registerListeners () {
+app.whenReady().then(() => {
+  // 设置内容安全策略，允许加载图片
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self' 'unsafe-inline' data:;",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline' data:;",
+          "img-src 'self' data: https: http: blob:;", // 允许加载网络图片
+          "media-src 'self' data: https: http:;",
+          "connect-src 'self' https: http: ws: wss:;"
+        ].join(' ')
+      }
+    });
+  });
+
+  createWindow()
+})
+
+async function registerListeners() {
   /**
    * This comes from bridge integration, check bridge.ts
    */
