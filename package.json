@@ -3,7 +3,7 @@
   "author": "Diego Fernandes <diego.schell.f@gmail.com>",
   "version": "2.0.0",
   "description": "An Electron boilerplate including TypeScript, React, Jest and ESLint.",
-  "main": "./.webpack/main/index.js",
+  "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
